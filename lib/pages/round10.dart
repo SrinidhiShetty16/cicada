@@ -1,29 +1,7 @@
-import 'dart:math';
-import 'package:cicada1/pages/finished.dart';
+import 'package:cicada1/pages/round102.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
-
-class R10 {
-  final List<Map<String, String>> _question10 = [
-    {
-      "question": "B",
-      "answer": "b",
-    },
-    {
-      "question": "C",
-      "answer": "c",
-    },
-    {
-      "question": "D",
-      "answer": "d",
-    },
-  ];
-  Map<String, String> getRandomQuestion() {
-    final randomIndex = Random().nextInt(_question10.length);
-    return _question10[randomIndex];
-  }
-}
 
 class QuestionTen extends StatefulWidget {
   final String phoneNumber;
@@ -34,54 +12,25 @@ class QuestionTen extends StatefulWidget {
 }
 
 class _QuestionTenState extends State<QuestionTen> {
-  final R10 questionProvider = R10();
-  late Map<String, String> currentQuestion;
   final TextEditingController _controller = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    currentQuestion = questionProvider.getRandomQuestion();
-  }
-
   void checkAnswer() {
-    if (_controller.text.trim().toLowerCase() ==
-        currentQuestion['answer']?.toLowerCase()) {
+    if (_controller.text.trim().toLowerCase() == "some answer") {
       setState(
         () {
           QuickAlert.show(
             context: context,
             type: QuickAlertType.success,
-            title: "Congratulations!!",
-            text: 'You have finished this online round',
-            confirmBtnText: 'Next round',
+            title: "That's right!!",
+            text: 'Question 1/5',
+            confirmBtnText: 'Next Question',
+            barrierDismissible: false,
             onConfirmBtnTap: () async {
-              late DateTime endTime;
-              endTime = DateTime.now();
-              FirebaseFirestore _firestore = FirebaseFirestore.instance;
-              try {
-                DocumentSnapshot doc = await _firestore
-                    .collection('users')
-                    .doc(widget.phoneNumber)
-                    .get();
-                String nextRound = "11";
-                DateTime startTime = doc['startTime'].toDate();
-                Duration elapsed = DateTime.now().difference(startTime);
-                await _firestore
-                    .collection('users')
-                    .doc(widget.phoneNumber)
-                    .update({
-                  'endTime': endTime,
-                  'timeTaken': elapsed.inSeconds,
-                  'nextRound': nextRound,
-                });
-              } catch (e) {
-                // print('Error comparing values: $e');
-              }
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Finished(),
+                  builder: (context) =>
+                      QuestionTwoOfTen(phoneNumber: widget.phoneNumber),
                 ),
               );
             },
@@ -95,8 +44,34 @@ class _QuestionTenState extends State<QuestionTen> {
             context: context,
             type: QuickAlertType.error,
             title: 'Wrong answer',
-            text: 'You have entered wrong answer',
+            text: 'You have entered wrong answer\n2 mins added to your time',
             confirmBtnText: 'Try again',
+            barrierDismissible: false,
+            onConfirmBtnTap: () async {
+              FirebaseFirestore _firestore = FirebaseFirestore.instance;
+              try {
+                DocumentSnapshot userDoc = await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .get();
+
+                var penaltyTime = userDoc['penaltyTime'];
+                penaltyTime = penaltyTime + 120;
+                await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .update({
+                  'penaltyTime': penaltyTime,
+                });
+              } catch (e) {}
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      QuestionTen(phoneNumber: widget.phoneNumber),
+                ),
+              );
+            },
           );
         },
       );
@@ -112,7 +87,7 @@ class _QuestionTenState extends State<QuestionTen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Question 10",
+              "Round 10",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -122,34 +97,52 @@ class _QuestionTenState extends State<QuestionTen> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Column(
-        children: [
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              labelText: 'Enter your answer',
-              border: OutlineInputBorder(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Question 1/5"),
+            const Text(
+              "Add question here",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          ElevatedButton(
-            onPressed: checkAnswer,
-            child: const Text('Submit'),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.black,
+            const SizedBox(
+              height: 20.0,
             ),
-          ),
-        ],
+            Image.asset(
+              'lib/assets/images/round10q1.jpeg',
+              width: 200,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                labelText: 'Enter your answer',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            ElevatedButton(
+              onPressed: checkAnswer,
+              child: const Text('Submit'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

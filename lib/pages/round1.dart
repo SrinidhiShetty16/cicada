@@ -1,5 +1,4 @@
-import 'dart:math';
-import 'package:cicada1/pages/round2.dart';
+import 'package:cicada1/pages/round012.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:flutter/material.dart';
@@ -9,24 +8,11 @@ class R1 {
     {
       "question": "A",
       "answer": "a",
-    },
-    {
-      "question": "B",
-      "answer": "b",
-    },
-    {
-      "question": "C",
-      "answer": "c",
     }
   ];
-  Map<String, String> getRandomQuestion() {
-    final randomIndex = Random().nextInt(_question1.length);
-    return _question1[randomIndex];
-  }
 }
 
 class QuestionOne extends StatefulWidget {
-  // const QuestionOne({super.key, required String phoneNumber});
   late final String phoneNumber;
   QuestionOne({required this.phoneNumber});
 
@@ -42,7 +28,7 @@ class _QuestionOneState extends State<QuestionOne> {
   @override
   void initState() {
     super.initState();
-    currentQuestion = questionProvider.getRandomQuestion();
+    currentQuestion = questionProvider._question1[0];
   }
 
   void checkAnswer() {
@@ -54,24 +40,15 @@ class _QuestionOneState extends State<QuestionOne> {
             context: context,
             type: QuickAlertType.success,
             title: "That's right!!",
-            text: 'You have entered right answer',
-            confirmBtnText: 'Next round',
+            text: 'Question 1/5 done',
+            confirmBtnText: 'Next question',
+            barrierDismissible: false,
             onConfirmBtnTap: () async {
-              FirebaseFirestore _firestore = FirebaseFirestore.instance;
-              try {
-                String nextRound = '2';
-                await _firestore
-                    .collection('users')
-                    .doc(widget.phoneNumber)
-                    .update({
-                  'nextRound': nextRound,
-                });
-              } catch (e) {}
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      QuestionTwo(phoneNumber: widget.phoneNumber),
+                      QuestionTwoOfOne(phoneNumber: widget.phoneNumber),
                 ),
               );
             },
@@ -85,8 +62,34 @@ class _QuestionOneState extends State<QuestionOne> {
             context: context,
             type: QuickAlertType.error,
             title: 'Wrong answer',
-            text: 'You have entered wrong answer',
+            text: 'You have entered wrong answer\n2 mins added to your time',
             confirmBtnText: 'Try again',
+            barrierDismissible: false,
+            onConfirmBtnTap: () async {
+              FirebaseFirestore _firestore = FirebaseFirestore.instance;
+              try {
+                DocumentSnapshot userDoc = await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .get();
+
+                var penaltyTime = userDoc['penaltyTime'];
+                penaltyTime = penaltyTime + 120;
+                await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .update({
+                  'penaltyTime': penaltyTime,
+                });
+              } catch (e) {}
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      QuestionOne(phoneNumber: widget.phoneNumber),
+                ),
+              );
+            },
           );
         },
       );
@@ -102,7 +105,7 @@ class _QuestionOneState extends State<QuestionOne> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Question 1",
+              "Round 1",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -114,6 +117,10 @@ class _QuestionOneState extends State<QuestionOne> {
       ),
       body: Column(
         children: [
+          const Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: Text("Question 1/5"),
+          ),
           Text(
             '${currentQuestion['question']}',
             style: const TextStyle(fontSize: 24.0),
@@ -123,9 +130,11 @@ class _QuestionOneState extends State<QuestionOne> {
           ),
           TextField(
             controller: _controller,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Enter your answer',
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
             ),
           ),
           const SizedBox(

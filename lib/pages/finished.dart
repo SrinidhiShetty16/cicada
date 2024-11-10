@@ -14,10 +14,11 @@ class _FinishedState extends State<Finished> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 350.0),
+            padding: EdgeInsets.symmetric(vertical: 300.0),
             child: Center(
               child: Text(
-                "Congratulation you have finished this",
+                "Congratulations\nYou have finished the online round\nPlease wait for the results.",
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
             ),

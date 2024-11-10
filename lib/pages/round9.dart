@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:cicada1/pages/round10.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quickalert/quickalert.dart';
@@ -10,19 +9,7 @@ class R9 {
       "question": "Y",
       "answer": "y",
     },
-    {
-      "question": "Z",
-      "answer": "z",
-    },
-    {
-      "question": "A",
-      "answer": "a",
-    }
   ];
-  Map<String, String> getRandomQuestion() {
-    final randomIndex = Random().nextInt(_question9.length);
-    return _question9[randomIndex];
-  }
 }
 
 class QuestionNine extends StatefulWidget {
@@ -41,7 +28,7 @@ class _QuestionNineState extends State<QuestionNine> {
   @override
   void initState() {
     super.initState();
-    currentQuestion = questionProvider.getRandomQuestion();
+    currentQuestion = questionProvider._question9[0];
   }
 
   void checkAnswer() {
@@ -53,8 +40,9 @@ class _QuestionNineState extends State<QuestionNine> {
             context: context,
             type: QuickAlertType.success,
             title: "That's right!!",
-            text: 'You have entered right answer',
+            text: 'You have cleared Round 9',
             confirmBtnText: 'Next round',
+            barrierDismissible: false,
             onConfirmBtnTap: () async {
               FirebaseFirestore _firestore = FirebaseFirestore.instance;
               try {
@@ -84,8 +72,34 @@ class _QuestionNineState extends State<QuestionNine> {
             context: context,
             type: QuickAlertType.error,
             title: 'Wrong answer',
-            text: 'You have entered wrong answer',
+            text: 'You have entered wrong answer\n2 mins added to your time',
             confirmBtnText: 'Try again',
+            barrierDismissible: false,
+            onConfirmBtnTap: () async {
+              FirebaseFirestore _firestore = FirebaseFirestore.instance;
+              try {
+                DocumentSnapshot userDoc = await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .get();
+
+                var penaltyTime = userDoc['penaltyTime'];
+                penaltyTime = penaltyTime + 120;
+                await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .update({
+                  'penaltyTime': penaltyTime,
+                });
+              } catch (e) {}
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      QuestionNine(phoneNumber: widget.phoneNumber),
+                ),
+              );
+            },
           );
         },
       );

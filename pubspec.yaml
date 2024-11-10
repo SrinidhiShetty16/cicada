@@ -37,6 +37,7 @@ dependencies:
   quickalert: ^1.1.0
   firebase_core: ^3.6.0
   cloud_firestore: ^5.4.4
+  youtube_player_flutter: ^9.1.1
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +55,18 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - lib/assets/images/cicada-bg1.png
+    - lib/assets/images/round3.jpeg
+    - lib/assets/images/round4.jpeg
+    - lib/assets/images/round5.jpeg
+    - lib/assets/images/round6.jpeg
+    - lib/assets/images/round7.jpeg
+    - lib/assets/images/round10q1.jpeg
+    - lib/assets/images/round10q2.jpeg
+    - lib/assets/images/round10q3.jpeg
+    - lib/assets/images/round10q4.jpeg
+    - lib/assets/images/round10q5.jpeg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

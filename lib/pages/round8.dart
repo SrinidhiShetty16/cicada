@@ -1,29 +1,8 @@
-import 'dart:math';
 import 'package:cicada1/pages/round9.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:flutter/material.dart';
-
-class R8 {
-  final List<Map<String, String>> _question8 = [
-    {
-      "question": "V",
-      "answer": "v",
-    },
-    {
-      "question": "W",
-      "answer": "w",
-    },
-    {
-      "question": "X",
-      "answer": "x",
-    }
-  ];
-  Map<String, String> getRandomQuestion() {
-    final randomIndex = Random().nextInt(_question8.length);
-    return _question8[randomIndex];
-  }
-}
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class QuestionEight extends StatefulWidget {
   final String phoneNumber;
@@ -34,27 +13,38 @@ class QuestionEight extends StatefulWidget {
 }
 
 class _QuestionEightState extends State<QuestionEight> {
-  final R8 questionProvider = R8();
-  late Map<String, String> currentQuestion;
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _acontroller = TextEditingController();
+  late YoutubePlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    currentQuestion = questionProvider.getRandomQuestion();
+    _controller = YoutubePlayerController(
+      initialVideoId: 'TMY1g8pAktk',
+      flags: YoutubePlayerFlags(
+        // autoPlay: true,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void checkAnswer() {
-    if (_controller.text.trim().toLowerCase() ==
-        currentQuestion['answer']?.toLowerCase()) {
+    if (_acontroller.text.trim().toLowerCase() == "some answer") {
       setState(
         () {
           QuickAlert.show(
             context: context,
             type: QuickAlertType.success,
             title: "That's right!!",
-            text: 'You have entered right answer',
-            confirmBtnText: 'Next round',
+            text: 'You have cleared Round 8',
+            confirmBtnText: 'Next Round',
+            barrierDismissible: false,
             onConfirmBtnTap: () async {
               FirebaseFirestore _firestore = FirebaseFirestore.instance;
               try {
@@ -66,6 +56,7 @@ class _QuestionEightState extends State<QuestionEight> {
                   'nextRound': nextRound,
                 });
               } catch (e) {}
+              _controller.pause();
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -84,8 +75,35 @@ class _QuestionEightState extends State<QuestionEight> {
             context: context,
             type: QuickAlertType.error,
             title: 'Wrong answer',
-            text: 'You have entered wrong answer',
+            text: 'You have entered wrong answer\n2 mins added to your time',
             confirmBtnText: 'Try again',
+            barrierDismissible: false,
+            onConfirmBtnTap: () async {
+              FirebaseFirestore _firestore = FirebaseFirestore.instance;
+              try {
+                DocumentSnapshot userDoc = await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .get();
+
+                var penaltyTime = userDoc['penaltyTime'];
+                penaltyTime = penaltyTime + 120;
+                await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .update({
+                  'penaltyTime': penaltyTime,
+                });
+              } catch (e) {}
+              _controller.pause();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      QuestionEight(phoneNumber: widget.phoneNumber),
+                ),
+              );
+            },
           );
         },
       );
@@ -101,7 +119,7 @@ class _QuestionEightState extends State<QuestionEight> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Question 8",
+              "Round 8",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -111,34 +129,50 @@ class _QuestionEightState extends State<QuestionEight> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Column(
-        children: [
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              labelText: 'Enter your answer',
-              border: OutlineInputBorder(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Add question here",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          ElevatedButton(
-            onPressed: checkAnswer,
-            child: const Text('Submit'),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.black,
+            const SizedBox(
+              height: 20.0,
             ),
-          ),
-        ],
+            YoutubePlayer(
+              controller: _controller,
+              showVideoProgressIndicator: true, // Show progress bar
+              progressIndicatorColor: Colors.red,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            TextField(
+              controller: _acontroller,
+              decoration: InputDecoration(
+                labelText: 'Enter your answer',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            ElevatedButton(
+              onPressed: checkAnswer,
+              child: const Text('Submit'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:cicada1/pages/round3.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,22 +6,10 @@ import 'package:quickalert/quickalert.dart';
 class R2 {
   final List<Map<String, String>> _question2 = [
     {
-      "question": "D",
-      "answer": "d",
+      "question": "B",
+      "answer": "b",
     },
-    {
-      "question": "E",
-      "answer": "e",
-    },
-    {
-      "question": "F",
-      "answer": "f",
-    }
   ];
-  Map<String, String> getRandomQuestion() {
-    final randomIndex = Random().nextInt(_question2.length);
-    return _question2[randomIndex];
-  }
 }
 
 class QuestionTwo extends StatefulWidget {
@@ -41,7 +28,7 @@ class _QuestionTwoState extends State<QuestionTwo> {
   @override
   void initState() {
     super.initState();
-    currentQuestion = questionProvider.getRandomQuestion();
+    currentQuestion = questionProvider._question2[0];
   }
 
   void checkAnswer() {
@@ -53,8 +40,9 @@ class _QuestionTwoState extends State<QuestionTwo> {
             context: context,
             type: QuickAlertType.success,
             title: "That's right!!",
-            text: 'You have entered right answer',
+            text: 'You have cleared Round 2',
             confirmBtnText: 'Next Round',
+            barrierDismissible: false,
             onConfirmBtnTap: () async {
               FirebaseFirestore _firestore = FirebaseFirestore.instance;
               try {
@@ -84,8 +72,34 @@ class _QuestionTwoState extends State<QuestionTwo> {
             context: context,
             type: QuickAlertType.error,
             title: 'Wrong answer',
-            text: 'You have entered wrong answer',
+            text: 'You have entered wrong answer\n2 mins added to your time',
             confirmBtnText: 'Try again',
+            barrierDismissible: false,
+            onConfirmBtnTap: () async {
+              FirebaseFirestore _firestore = FirebaseFirestore.instance;
+              try {
+                DocumentSnapshot userDoc = await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .get();
+
+                var penaltyTime = userDoc['penaltyTime'];
+                penaltyTime = penaltyTime + 120;
+                await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .update({
+                  'penaltyTime': penaltyTime,
+                });
+              } catch (e) {}
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      QuestionTwo(phoneNumber: widget.phoneNumber),
+                ),
+              );
+            },
           );
         },
       );
@@ -101,7 +115,7 @@ class _QuestionTwoState extends State<QuestionTwo> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Question 2",
+              "Round 2",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 24.0,

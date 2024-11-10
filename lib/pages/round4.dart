@@ -1,29 +1,7 @@
-import 'dart:math';
 import 'package:cicada1/pages/round5.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:flutter/material.dart';
-
-class R4 {
-  final List<Map<String, String>> _question4 = [
-    {
-      "question": "J",
-      "answer": "j",
-    },
-    {
-      "question": "K",
-      "answer": "k",
-    },
-    {
-      "question": "L",
-      "answer": "l",
-    }
-  ];
-  Map<String, String> getRandomQuestion() {
-    final randomIndex = Random().nextInt(_question4.length);
-    return _question4[randomIndex];
-  }
-}
 
 class QuestionFour extends StatefulWidget {
   final String phoneNumber;
@@ -34,27 +12,19 @@ class QuestionFour extends StatefulWidget {
 }
 
 class _QuestionFourState extends State<QuestionFour> {
-  final R4 questionProvider = R4();
-  late Map<String, String> currentQuestion;
   final TextEditingController _controller = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    currentQuestion = questionProvider.getRandomQuestion();
-  }
-
   void checkAnswer() {
-    if (_controller.text.trim().toLowerCase() ==
-        currentQuestion['answer']?.toLowerCase()) {
+    if (_controller.text.trim().toLowerCase() == "some answer") {
       setState(
         () {
           QuickAlert.show(
             context: context,
             type: QuickAlertType.success,
             title: "That's right!!",
-            text: 'You have entered right answer',
-            confirmBtnText: 'Next round',
+            text: 'You have cleared Round 4',
+            confirmBtnText: 'Next Round',
+            barrierDismissible: false,
             onConfirmBtnTap: () async {
               FirebaseFirestore _firestore = FirebaseFirestore.instance;
               try {
@@ -84,8 +54,34 @@ class _QuestionFourState extends State<QuestionFour> {
             context: context,
             type: QuickAlertType.error,
             title: 'Wrong answer',
-            text: 'You have entered wrong answer',
+            text: 'You have entered wrong answer\n2 mins added to your time',
             confirmBtnText: 'Try again',
+            barrierDismissible: false,
+            onConfirmBtnTap: () async {
+              FirebaseFirestore _firestore = FirebaseFirestore.instance;
+              try {
+                DocumentSnapshot userDoc = await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .get();
+
+                var penaltyTime = userDoc['penaltyTime'];
+                penaltyTime = penaltyTime + 120;
+                await _firestore
+                    .collection('users')
+                    .doc(widget.phoneNumber)
+                    .update({
+                  'penaltyTime': penaltyTime,
+                });
+              } catch (e) {}
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      QuestionFour(phoneNumber: widget.phoneNumber),
+                ),
+              );
+            },
           );
         },
       );
@@ -101,7 +97,7 @@ class _QuestionFourState extends State<QuestionFour> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Question 4",
+              "Round 4",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -111,34 +107,51 @@ class _QuestionFourState extends State<QuestionFour> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Column(
-        children: [
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              labelText: 'Enter your answer',
-              border: OutlineInputBorder(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Add question here",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          ElevatedButton(
-            onPressed: checkAnswer,
-            child: const Text('Submit'),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.black,
+            const SizedBox(
+              height: 20.0,
             ),
-          ),
-        ],
+            Image.asset(
+              'lib/assets/images/round4.jpeg',
+              width: 200,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                labelText: 'Enter your answer',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            ElevatedButton(
+              onPressed: checkAnswer,
+              child: const Text('Submit'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

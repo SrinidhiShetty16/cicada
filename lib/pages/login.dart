@@ -193,6 +193,17 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 200.0,
           ),
+          Text(
+            "Login Page",
+            style: TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 25.0,
+              color: const Color.fromARGB(255, 9, 87, 151),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
           TextField(
             controller: _phone,
             keyboardType: TextInputType.number,
