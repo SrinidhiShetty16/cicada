@@ -22,7 +22,7 @@ class _QuestionThreeOfTenState extends State<QuestionThreeOfTen> {
             context: context,
             type: QuickAlertType.success,
             title: "That's right!!",
-            text: 'Question 4/5',
+            text: 'Question 3/5',
             confirmBtnText: 'Next Question',
             barrierDismissible: false,
             onConfirmBtnTap: () async {
@@ -97,51 +97,56 @@ class _QuestionThreeOfTenState extends State<QuestionThreeOfTen> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Question 3/5"),
-            const Text(
-              "Add question here",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Image.asset(
-              'lib/assets/images/round10q3.jpeg',
-              width: 200,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: 'Enter your answer',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 80.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Question 3/5"),
+                const Text(
+                  "Add question here",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
                 ),
-              ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Image.asset(
+                  'lib/assets/images/round10q3.jpeg',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your answer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                ElevatedButton(
+                  onPressed: checkAnswer,
+                  child: const Text('Submit'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.black,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            ElevatedButton(
-              onPressed: checkAnswer,
-              child: const Text('Submit'),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.black,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

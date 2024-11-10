@@ -107,50 +107,55 @@ class _QuestionThreeState extends State<QuestionThree> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Add question here",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Image.asset(
-              'lib/assets/images/round3.jpeg',
-              width: 200,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: 'Enter your answer',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 80.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Add question here",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
                 ),
-              ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Image.asset(
+                  'lib/assets/images/round3.jpeg',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your answer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                ElevatedButton(
+                  onPressed: checkAnswer,
+                  child: const Text('Submit'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.black,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            ElevatedButton(
-              onPressed: checkAnswer,
-              child: const Text('Submit'),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.black,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

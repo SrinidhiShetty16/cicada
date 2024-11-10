@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
               context: context,
               type: QuickAlertType.success,
               title: "Great!!",
-              text: 'You are authenticated user',
+              text: 'You are an authenticated user',
               confirmBtnText: 'Start',
               onConfirmBtnTap: () {
                 switch (nextRound) {

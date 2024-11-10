@@ -13,8 +13,13 @@ class QuestionEight extends StatefulWidget {
 }
 
 class _QuestionEightState extends State<QuestionEight> {
-  final TextEditingController _acontroller = TextEditingController();
+  final TextEditingController _acontroller1 = TextEditingController();
+  final TextEditingController _acontroller2 = TextEditingController();
+  final TextEditingController _acontroller3 = TextEditingController();
+  final TextEditingController _acontroller4 = TextEditingController();
+  final TextEditingController _acontroller5 = TextEditingController();
   late YoutubePlayerController _controller;
+  var wrongAnswer = "";
 
   @override
   void initState() {
@@ -34,79 +39,102 @@ class _QuestionEightState extends State<QuestionEight> {
     super.dispose();
   }
 
-  void checkAnswer() {
-    if (_acontroller.text.trim().toLowerCase() == "some answer") {
-      setState(
-        () {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            title: "That's right!!",
-            text: 'You have cleared Round 8',
-            confirmBtnText: 'Next Round',
-            barrierDismissible: false,
-            onConfirmBtnTap: () async {
-              FirebaseFirestore _firestore = FirebaseFirestore.instance;
-              try {
-                String nextRound = '9';
-                await _firestore
-                    .collection('users')
-                    .doc(widget.phoneNumber)
-                    .update({
-                  'nextRound': nextRound,
-                });
-              } catch (e) {}
-              _controller.pause();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      QuestionNine(phoneNumber: widget.phoneNumber),
-                ),
-              );
-            },
-          );
-        },
-      );
-    } else {
-      setState(
-        () {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            title: 'Wrong answer',
-            text: 'You have entered wrong answer\n2 mins added to your time',
-            confirmBtnText: 'Try again',
-            barrierDismissible: false,
-            onConfirmBtnTap: () async {
-              FirebaseFirestore _firestore = FirebaseFirestore.instance;
-              try {
-                DocumentSnapshot userDoc = await _firestore
-                    .collection('users')
-                    .doc(widget.phoneNumber)
-                    .get();
+  void correct() {
+    setState(
+      () {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: "That's right!!",
+          text: 'You have cleared Round 8',
+          confirmBtnText: 'Next Round',
+          barrierDismissible: false,
+          onConfirmBtnTap: () async {
+            FirebaseFirestore _firestore = FirebaseFirestore.instance;
+            try {
+              String nextRound = '9';
+              await _firestore
+                  .collection('users')
+                  .doc(widget.phoneNumber)
+                  .update({
+                'nextRound': nextRound,
+              });
+            } catch (e) {}
+            _controller.pause();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    QuestionNine(phoneNumber: widget.phoneNumber),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
-                var penaltyTime = userDoc['penaltyTime'];
-                penaltyTime = penaltyTime + 120;
-                await _firestore
-                    .collection('users')
-                    .doc(widget.phoneNumber)
-                    .update({
-                  'penaltyTime': penaltyTime,
-                });
-              } catch (e) {}
-              _controller.pause();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      QuestionEight(phoneNumber: widget.phoneNumber),
-                ),
-              );
-            },
-          );
-        },
-      );
+  void wrong() {
+    setState(
+      () {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Wrong answer',
+          text: 'List of wrong answers$wrongAnswer.\n2 mins added to your time',
+          confirmBtnText: 'Try again',
+          barrierDismissible: false,
+          onConfirmBtnTap: () async {
+            FirebaseFirestore _firestore = FirebaseFirestore.instance;
+            try {
+              DocumentSnapshot userDoc = await _firestore
+                  .collection('users')
+                  .doc(widget.phoneNumber)
+                  .get();
+
+              var penaltyTime = userDoc['penaltyTime'];
+              penaltyTime = penaltyTime + 120;
+              await _firestore
+                  .collection('users')
+                  .doc(widget.phoneNumber)
+                  .update({
+                'penaltyTime': penaltyTime,
+              });
+            } catch (e) {}
+            _controller.pause();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    QuestionEight(phoneNumber: widget.phoneNumber),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void checkAnswer() {
+    if (_acontroller1.text.trim() != "one") {
+      wrongAnswer = "$wrongAnswer 1";
+    }
+    if (_acontroller2.text.trim() != "two") {
+      wrongAnswer = "$wrongAnswer 2";
+    }
+    if (_acontroller3.text.trim() != "three") {
+      wrongAnswer = "$wrongAnswer 3";
+    }
+    if (_acontroller4.text.trim() != "four") {
+      wrongAnswer = "$wrongAnswer 4";
+    }
+    if (_acontroller5.text.trim() != "five") {
+      wrongAnswer = "$wrongAnswer 5";
+    }
+    if (wrongAnswer == "") {
+      correct();
+    } else {
+      wrong();
     }
   }
 
@@ -129,49 +157,102 @@ class _QuestionEightState extends State<QuestionEight> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Add question here",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            YoutubePlayer(
-              controller: _controller,
-              showVideoProgressIndicator: true, // Show progress bar
-              progressIndicatorColor: Colors.red,
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            TextField(
-              controller: _acontroller,
-              decoration: InputDecoration(
-                labelText: 'Enter your answer',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 80.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Add question here",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
                 ),
-              ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true, // Show progress bar
+                  progressIndicatorColor: Colors.red,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TextField(
+                  controller: _acontroller1,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your answer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                TextField(
+                  controller: _acontroller2,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your answer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                TextField(
+                  controller: _acontroller3,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your answer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                TextField(
+                  controller: _acontroller4,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your answer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                TextField(
+                  controller: _acontroller5,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your answer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                ElevatedButton(
+                  onPressed: checkAnswer,
+                  child: const Text('Submit'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.black,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            ElevatedButton(
-              onPressed: checkAnswer,
-              child: const Text('Submit'),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.black,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
