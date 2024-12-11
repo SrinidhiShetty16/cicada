@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class R1 {
   final List<Map<String, String>> _question1 = [
     {
-      "question": "A",
-      "answer": "a",
+      "question":
+          "Which letter appears exactly 5 times in the following\nCOCO LIKES HER COCOA HOT BUT NOT TOO CHOCOLATEY",
+      "answer": "T",
     }
   ];
 }
@@ -121,9 +122,13 @@ class _QuestionOneState extends State<QuestionOne> {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Text("Question 1/5"),
           ),
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text(
+              '${currentQuestion['question']}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 24.0),
+            ),
           ),
           const SizedBox(
             height: 20.0,

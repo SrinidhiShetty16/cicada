@@ -20,7 +20,7 @@ class _QuestionFiveOfTenState extends State<QuestionFiveOfTen> {
   }
 
   void checkAnswer() {
-    if (_controller.text.trim().toLowerCase() == "some answer") {
+    if (_controller.text.trim().toLowerCase() == "c") {
       setState(
         () {
           QuickAlert.show(
@@ -133,20 +133,13 @@ class _QuestionFiveOfTenState extends State<QuestionFiveOfTen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Question 5/5"),
-                const Text(
-                  "Add question here",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),
-                ),
                 const SizedBox(
                   height: 20.0,
                 ),
                 Image.asset(
-                  'lib/assets/images/round10q5.jpeg',
-                  width: 200,
-                  height: 200,
+                  'lib/assets/images/round10q5.png',
+                  width: 300,
+                  height: 300,
                   fit: BoxFit.cover,
                 ),
                 const SizedBox(

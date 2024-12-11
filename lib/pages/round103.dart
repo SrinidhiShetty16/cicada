@@ -15,7 +15,8 @@ class _QuestionThreeOfTenState extends State<QuestionThreeOfTen> {
   final TextEditingController _controller = TextEditingController();
 
   void checkAnswer() {
-    if (_controller.text.trim().toLowerCase() == "some answer") {
+    if (_controller.text.trim().toLowerCase() == "scrambled eggs on toast" ||
+        _controller.text.trim().toLowerCase() == "scrambled eggs toast") {
       setState(
         () {
           QuickAlert.show(
@@ -105,18 +106,11 @@ class _QuestionThreeOfTenState extends State<QuestionThreeOfTen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Question 3/5"),
-                const Text(
-                  "Add question here",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),
-                ),
                 const SizedBox(
                   height: 20.0,
                 ),
                 Image.asset(
-                  'lib/assets/images/round10q3.jpeg',
+                  'lib/assets/images/round10q3.png',
                   width: 200,
                   height: 200,
                   fit: BoxFit.cover,

@@ -15,7 +15,8 @@ class _QuestionSixState extends State<QuestionSix> {
   final TextEditingController _controller = TextEditingController();
 
   void checkAnswer() {
-    if (_controller.text.trim().toLowerCase() == "some answer") {
+    if (_controller.text.trim().toLowerCase() == "socks" ||
+        _controller.text.trim().toLowerCase() == "sock") {
       setState(
         () {
           QuickAlert.show(
@@ -114,19 +115,12 @@ class _QuestionSixState extends State<QuestionSix> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Add question here",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),
-                ),
                 const SizedBox(
                   height: 20.0,
                 ),
                 Image.asset(
-                  'lib/assets/images/round6.jpeg',
-                  width: 200,
+                  'lib/assets/images/round6.png',
+                  width: 350,
                   height: 200,
                   fit: BoxFit.cover,
                 ),

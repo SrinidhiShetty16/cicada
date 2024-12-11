@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class R1 {
   final List<Map<String, String>> _question1 = [
     {
-      "question": "AAA",
-      "answer": "aaa",
+      "question":
+          " If Recollect is 1, Interesting is 5, Belligerent is 8, what is Inaccurate?",
+      "answer": "7",
     }
   ];
 }
@@ -33,7 +34,8 @@ class _QuestionThreeOfOneState extends State<QuestionThreeOfOne> {
 
   void checkAnswer() {
     if (_controller.text.trim().toLowerCase() ==
-        currentQuestion['answer']?.toLowerCase()) {
+            currentQuestion['answer']?.toLowerCase() ||
+        _controller.text.trim().toLowerCase() == "seven") {
       setState(
         () {
           QuickAlert.show(
@@ -121,9 +123,13 @@ class _QuestionThreeOfOneState extends State<QuestionThreeOfOne> {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Text("Question 3/5"),
           ),
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text(
+              '${currentQuestion['question']}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 24.0),
+            ),
           ),
           const SizedBox(
             height: 20.0,

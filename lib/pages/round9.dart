@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class R9 {
   final List<Map<String, String>> _question9 = [
     {
-      "question": "Y",
-      "answer": "y",
+      "question":
+          "1st alphabet: I am situated at the first position above tank.\n2nd : I am situated between T and O , dated 5/7/2022.\n3rd: I am at the first place above wait is over.\n4th : who won the dino run , collect the 2nd letter.\n5th: who won call of duty, collect 1st letter.\n6th: I am behind OHI dated 5/7/2022\n",
+      "answer": "shaper",
     },
   ];
 }
@@ -115,7 +116,7 @@ class _QuestionNineState extends State<QuestionNine> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Question 9",
+              "Question 9 [Instagram]",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -125,34 +126,53 @@ class _QuestionNineState extends State<QuestionNine> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Column(
-        children: [
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              labelText: 'Enter your answer',
-              border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Form a word from following hints",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          ElevatedButton(
-            onPressed: checkAnswer,
-            child: const Text('Submit'),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.black,
+            const Text(
+              "hint: Devops Malnad Insta id",
+              textAlign: TextAlign.center,
+              style:
+                  const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w200),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '${currentQuestion['question']}',
+                style: const TextStyle(fontSize: 20.0),
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                labelText: 'Enter your answer',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            ElevatedButton(
+              onPressed: checkAnswer,
+              child: const Text('Submit'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -15,7 +15,7 @@ class _QuestionTenState extends State<QuestionTen> {
   final TextEditingController _controller = TextEditingController();
 
   void checkAnswer() {
-    if (_controller.text.trim().toLowerCase() == "some answer") {
+    if (_controller.text.trim().toLowerCase() == "pain in neck") {
       setState(
         () {
           QuickAlert.show(
@@ -105,18 +105,11 @@ class _QuestionTenState extends State<QuestionTen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Question 1/5"),
-                const Text(
-                  "Add question here",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),
-                ),
                 const SizedBox(
                   height: 20.0,
                 ),
                 Image.asset(
-                  'lib/assets/images/round10q1.jpeg',
+                  'lib/assets/images/round10q1.jpg',
                   width: 200,
                   height: 200,
                   fit: BoxFit.cover,

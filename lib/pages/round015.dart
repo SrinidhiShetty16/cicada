@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 class R1 {
   final List<Map<String, String>> _question1 = [
     {
-      "question": "AAAAA",
-      "answer": "aaaaa",
+      "question": "Guess the conundrum.\nUNMCDNORU",
+      "answer": "CONUNDRUM",
     }
   ];
 }
@@ -131,9 +131,13 @@ class _QuestionFiveOfOneState extends State<QuestionFiveOfOne> {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Text("Question 5/5"),
           ),
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text(
+              '${currentQuestion['question']}',
+              style: const TextStyle(fontSize: 24.0),
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(
             height: 20.0,

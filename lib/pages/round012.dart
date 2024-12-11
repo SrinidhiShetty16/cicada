@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 class R1 {
   final List<Map<String, String>> _question1 = [
     {
-      "question": "AA",
-      "answer": "aa",
+      "question": "Which of these is the odd one?",
+      "answer": "b",
     }
   ];
 }
@@ -33,7 +33,8 @@ class _QuestionTwoOfOneState extends State<QuestionTwoOfOne> {
 
   void checkAnswer() {
     if (_controller.text.trim().toLowerCase() ==
-        currentQuestion['answer']?.toLowerCase()) {
+            currentQuestion['answer']?.toLowerCase() ||
+        _controller.text.trim().toLowerCase() == "reservoir") {
       setState(
         () {
           QuickAlert.show(
@@ -121,9 +122,13 @@ class _QuestionTwoOfOneState extends State<QuestionTwoOfOne> {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Text("Question 2/5"),
           ),
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text(
+              '${currentQuestion['question']}\na) Rotator \nb) Reservoir \nc) Rotavator \nd) Racecar',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 24.0),
+            ),
           ),
           const SizedBox(
             height: 20.0,

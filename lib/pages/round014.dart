@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class R1 {
   final List<Map<String, String>> _question1 = [
     {
-      "question": "AAAA",
-      "answer": "aaaa",
+      "question":
+          "When the going gets tough the tough get going.\nSo guess the missing alphabets to help us out.\n_eitue_t_",
+      "answer": "eui",
     }
   ];
 }
@@ -33,7 +34,8 @@ class _QuestionFourOfOneState extends State<QuestionFourOfOne> {
 
   void checkAnswer() {
     if (_controller.text.trim().toLowerCase() ==
-        currentQuestion['answer']?.toLowerCase()) {
+            currentQuestion['answer']?.toLowerCase() ||
+        _controller.text.trim().toLowerCase() == "eeitueuti") {
       setState(
         () {
           QuickAlert.show(
@@ -121,9 +123,13 @@ class _QuestionFourOfOneState extends State<QuestionFourOfOne> {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Text("Question 4/5"),
           ),
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text(
+              '${currentQuestion['question']}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 24.0),
+            ),
           ),
           const SizedBox(
             height: 20.0,

@@ -6,8 +6,9 @@ import 'package:quickalert/quickalert.dart';
 class R2 {
   final List<Map<String, String>> _question2 = [
     {
-      "question": "B",
-      "answer": "b",
+      "question":
+          "How many times in a day, are the hands of a clock in straight line but opposite in direction.",
+      "answer": "22",
     },
   ];
 }
@@ -33,7 +34,8 @@ class _QuestionTwoState extends State<QuestionTwo> {
 
   void checkAnswer() {
     if (_controller.text.trim().toLowerCase() ==
-        currentQuestion['answer']?.toLowerCase()) {
+            currentQuestion['answer']?.toLowerCase() ||
+        _controller.text.trim().toLowerCase() == "twenty two") {
       setState(
         () {
           QuickAlert.show(
@@ -127,9 +129,18 @@ class _QuestionTwoState extends State<QuestionTwo> {
       ),
       body: Column(
         children: [
-          Text(
-            '${currentQuestion['question']}',
-            style: const TextStyle(fontSize: 24.0),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text(
+              '${currentQuestion['question']}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 24.0),
+            ),
+          ),
+          const Text(
+            "hint: Ignore seconds hand",
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w200),
           ),
           const SizedBox(
             height: 20.0,

@@ -25,7 +25,7 @@ class _QuestionEightState extends State<QuestionEight> {
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      initialVideoId: 'TMY1g8pAktk',
+      initialVideoId: 'rUPiiUExiq4',
       flags: YoutubePlayerFlags(
         // autoPlay: true,
         mute: false,
@@ -116,19 +116,24 @@ class _QuestionEightState extends State<QuestionEight> {
   }
 
   void checkAnswer() {
-    if (_acontroller1.text.trim() != "one") {
+    if (_acontroller1.text.trim().toLowerCase() != "7:24" &&
+        _acontroller1.text.trim().toLowerCase() != "7:24pm" &&
+        _acontroller1.text.trim().toLowerCase() != "7:24 pm") {
       wrongAnswer = "$wrongAnswer 1";
     }
-    if (_acontroller2.text.trim() != "two") {
+    if (_acontroller2.text.trim().toLowerCase() != "mrunal thakur" &&
+        _acontroller2.text.trim().toLowerCase() != "mrunal") {
       wrongAnswer = "$wrongAnswer 2";
     }
-    if (_acontroller3.text.trim() != "three") {
+    if (_acontroller3.text.trim().toLowerCase() != "red" &&
+        _acontroller3.text.trim().toLowerCase() != "red and white" &&
+        _acontroller3.text.trim().toLowerCase() != "white and red") {
       wrongAnswer = "$wrongAnswer 3";
     }
-    if (_acontroller4.text.trim() != "four") {
+    if (_acontroller4.text.trim().toLowerCase() != "amul") {
       wrongAnswer = "$wrongAnswer 4";
     }
-    if (_acontroller5.text.trim() != "five") {
+    if (_acontroller5.text.trim().toLowerCase() != "yellow") {
       wrongAnswer = "$wrongAnswer 5";
     }
     if (wrongAnswer == "") {
@@ -165,7 +170,7 @@ class _QuestionEightState extends State<QuestionEight> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Add question here",
+                  "Answer all the following questions",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0,
@@ -182,6 +187,12 @@ class _QuestionEightState extends State<QuestionEight> {
                 const SizedBox(
                   height: 20.0,
                 ),
+                const Text(
+                  "1. At what time was Shaay cafe's video shot?",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
                 TextField(
                   controller: _acontroller1,
                   decoration: InputDecoration(
@@ -192,7 +203,13 @@ class _QuestionEightState extends State<QuestionEight> {
                   ),
                 ),
                 const SizedBox(
-                  height: 5.0,
+                  height: 20.0,
+                ),
+                const Text(
+                  "2. Which heroine's video was being played?",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
                 ),
                 TextField(
                   controller: _acontroller2,
@@ -204,7 +221,13 @@ class _QuestionEightState extends State<QuestionEight> {
                   ),
                 ),
                 const SizedBox(
-                  height: 5.0,
+                  height: 20.0,
+                ),
+                const Text(
+                  "3. What colour shirt was goal keeper wearing?",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
                 ),
                 TextField(
                   controller: _acontroller3,
@@ -216,7 +239,13 @@ class _QuestionEightState extends State<QuestionEight> {
                   ),
                 ),
                 const SizedBox(
-                  height: 5.0,
+                  height: 20.0,
+                ),
+                const Text(
+                  "4. Which ice-cream brand's freezer was present in the video?",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
                 ),
                 TextField(
                   controller: _acontroller4,
@@ -228,7 +257,13 @@ class _QuestionEightState extends State<QuestionEight> {
                   ),
                 ),
                 const SizedBox(
-                  height: 5.0,
+                  height: 20.0,
+                ),
+                const Text(
+                  "5. What's the colour of the dustbin?",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
                 ),
                 TextField(
                   controller: _acontroller5,
